@@ -1,7 +1,7 @@
 const express = require('express');
 const apiRouter = express.Router();
 
-const groceryRouter = require('./grocery');
-apiRouter.use('/grocery', groceryRouter);
+const envelopeRouter = require('./envelope');
+apiRouter.use('/envelope', envelopeRouter);
 
-module.exports = apiRouter
+module.exports = apiRouter;
