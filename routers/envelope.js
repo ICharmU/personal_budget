@@ -13,31 +13,51 @@ let budget = {
 }
 
 // http requests
-envelopeRouter.param('newBudget', (req, res, next, newBudget) => {
-    let newBudget = req.query;
-    if (newBudget) {
-        req.budget.food = newBudget;
+envelopeRouter.param('type', (req, res, next, type) => {
+    let newBudget = req.query.budgetAmount;
+    let budgetType = false;
+    for (let i = 0; i<budget.length; i++) {
+        if (type == budget[i]) {
+            i = budget.length;
+            budgetType = true;
+        }
+    }
+    if (newBudget && budgetType) {
+        budget.type = newBudget;
         next();
     } else {
         res.status(404).send();
     }
 });
 
-envelopeRouter.get('/:food', (req, res, next) => {
+envelopeRouter.get('/', (req, res, next) => {
+    let tot = 0;
+    for (let i = 0; i<budget.length; i++) {
+        if (budget[i] != undefined) {
+            tot += budget[i];
+        }
+    }
+    res.status(200).send(tot);
+});
+
+envelopeRouter.get('/:type', (req, res, next) => {
     res.status(200).send(newBudget);
 });
 
 
-envelopeRouter.put('/:food', (req, res, next) => {
+envelopeRouter.put('/:type', (req, res, next) => {
     budget.food = newBudget;
     res.status(200).send(newBudget);
 });
 
-envelopeRouter.post('/:food', (req, res, next) => {
+envelopeRouter.post('/:type', (req, res, next) => {
+    if (newBudget) {
+        envelopeRouter[type] = newBudget;
+    }
     res.status(200).send(newBudget);
 });
 
-envelopeRouter.delete('/:food', (req, res, next) => {
+envelopeRouter.delete('/:type', (req, res, next) => {
     if (newBudget) {
         delete budget['food'];
         res.status(200).send();
